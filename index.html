@@ -1,9 +1,278 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Mi App Netflix</title>
-  </head>
-  <body>
-    <h1>¡Hola desde GitHub Pages!</h1>
-  </body>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZFILMER</title>
+  <style>
+    body {
+      margin: 0;
+      background: #121212;
+      font-family: Arial, sans-serif;
+      color: #0eb9ed;
+    }
+    header {
+      padding: 20px;
+      background: #1e1e1e;
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      max-width: 500px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    h2 {
+      margin: 20px 0 10px 20px;
+    }
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 10px 20px;
+    }
+    .card {
+      min-width: 150px;
+      height: 220px;
+      margin-right: 15px;
+      background-color: #222;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    #playerPopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    #playerPopup iframe {
+      width: 90%;
+      height: 80%;
+    }
+    #closeBtn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ZFILMER</h1>
+    <input type="text" id="searchInput" placeholder="Buscar películas...">
+  </header>
+
+  <div id="secciones">
+    <h2>Estrenos</h2>
+    <div class="carousel" id="estrenos">
+      <!-- tarjetas -->
+    </div>
+
+    <h2>Lo recomendado para ti</h2>
+    <div class="carousel" id="recomendado">
+      <!-- tarjetas -->
+    </div>
+
+
+    <h2>Ciencia ficción</h2>
+    <div class="carousel" id="ciencia">
+      <!-- tarjetas -->
+    </div>
+
+    <h2>Animadas</h2>
+    <div class="carousel" id="animadas">
+      <!-- tarjetas -->
+    </div>
+
+</div>
+
+    <h2>Terror</h2>
+    <div class="carousel" id="terror">
+      <!-- tarjetas -->
+    </div>
+
+
+  <div id="playerPopup">
+    <span id="closeBtn" onclick="closePlayer()">×</span>
+    <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', function () {
+      const term = this.value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        card.style.display = title.includes(term) ? '' : 'none';
+      });
+    });
+
+    function openPlayer(link) {
+  if (link.includes('media.cm')) {
+    const newWindow = window.open();
+    if (newWindow) {
+      newWindow.opener = null;
+      newWindow.location = link;
+    } else {
+      alert("El navegador bloqueó la ventana emergente. Activa los pop-ups.");
+    }
+  } else {
+    document.getElementById('videoFrame').src = link;
+    document.getElementById('playerPopup').style.display = 'flex';
+  }
+}
+
+
+    const estrenos = [
+      { title: "lilo y Stitch", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRrLQXk8VUI-1h4BoKd4EvXzSgYLDq2O-vEQih6GRz63yf9rvDthvtJGHB&s=10", link: "https://www.bitchute.com/embed/eNm8897mCuyM" },
+      { title: "destino final", img: "https://es.web.img3.acsta.net/img/9b/98/9b98ab62cbc8ef37c708c652dc72a905.jpg", link: "https://pixeldrain.com/u/3cbeoiNb" },
+{ title: "misión imposible", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuFXkhbCRmdcG5wL3jwdX0GxxvcJ6TVxm-UTCHKvQheteyvigLo36Z0l4&s=10", link: "https://pixeldrain.com/u/oVzycxeh" },
+{ title: "thunderbolts", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaWN1cam6w1H5yW1cI5y0-yKKvXLFHTydA-QLg6lz_B3v9c2stQWeaQc4&s=10", link: "https://pixeldrain.com/u/TjDozYKN" },
+{ title: "karate kid leyendas", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpAmgaNm4YlQLYQC6Lfps5Oc7Eet5Fn8zQA_Tq9roL1U7Tm8RrvokJSvog&s=10", link: "https://www.bitchute.com/embed/wd1fhRzVo8x9/" },
+      { title: "Hurry Up Tomorrow", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSAbbKCn79HBr5bdRKU46ZIzQgn-ED00rnvcx3QbwYPZCsxs3aoLZ1gZoq&s=10", link: "https://www.bitchute.com/embed/rWTepGNVEubE" }
+    ];
+
+    const recomendado = [
+{ title: "baby driver", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWXrdyKo_5DXDFS_MC4gRaqWlegT_dviIVTZtaBfrF_E8q4Nhg2AovWFcA&s=10", link: "https://www.bitchute.com/embed/pnTysFmDHi0j" },
+{ title: "reciden evil", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbneNce762mkr7TOWwa3gheQBdXsPv2iMYIQ3ke-B609IqSUqqpOWkoFg&s=10", link: "https://www.bitchute.com/embed/tBqog71Ezyna/" },
+{ title: "el dia después de mañana", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQun74Wl67AuKrfnYoIt908IubE4aqBaQCrJm2LO8N04i38qDmgz-s-zrw&s=10", link: "https://www.bitchute.com/embed/nZrCc6h1erQ2/" },
+{ title: "piratas del caribe", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFsdL6NRkiabE-n8j4-gfnZK-EPq30ebet1WEGpPcwRYUaf6EGuix4ikLW&s=10", link: "https://www.bitchute.com/embed/3dDDlKsn6KE1/" },
+{ title: "alita", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQcGJQ--QP0wRl_xo73Vd2ugu6EhOXNSLj2yzhESxIAyNyeDs5X47nIfNh&s=10", link: "https://www.bitchute.com/embed/DlwLG2BI9AMh" },
+{ title: "viaje al centro de la tierra", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7pzPRD5mfkJ0te4OKVLmPLPCAc3KMfuaROJ9GuuEhgL5BPCYBvuHWuEBl&s=10", link: "https://www.bitchute.com/embed/ORX5BHOJcoSq" },
+{ title: "infierno", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP4C65nCAugYP5VLyz50rRdBHo1eN2NDaxckUCygdLkwyEYdzvERPaJm5x&s=10", link: "https://www.bitchute.com/embed/FNJ7fBBM28If" },
+      { title: "zona de miedo", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtbAlrggVXwXCtLn8jwmHVV8IpgHqYfblC3hKQxJyqLTGLOqIe6XbayRY&s=10", link: "https://pixeldrain.com/u/cnhp8ePn" },
+{ title: "kong vs Godzilla", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU5R86Y4daWfnoaaJEyKRidhuJ0_Vzc5tLLyyEJFxVsEkIwI19Ey3sy33F&s=10", link: "http://laguaridadegian.com.ar/content/godzilla/peliculas/godzilla-vs-kong.mp4" },
+{ title: "profesión peligro", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCgv-CZeAC66AGkpdFrvjG5AuiOIyKWLUIokDrxAcePQEqQ4ZQgZjNKUb5&s=10", link: "https://pixeldrain.com/u/1B5gyELf" },
+{ title: "rescatando al soldado ryan", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Vypmf-WE2nW-JXNZWP9WiH6mKHCeKyHmqJ-yVZy7O1UnNXXDnLIG9FaT&s=10", link: "https://pixeldrain.com/u/gAcEboEN" },
+{ title: "titanes del pacífico", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTto_pjqOuJsNvEwDMmMhv7GO8gXpmO1Mhj_WCwZgB5QuMWmu9LOCdCBTp-&s=10", link: "http://laguaridadegian.com.ar/content/peliculas/pacific-rim-uprising.mp4" },
+{ title: "Avatar", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM5zjQPBNh5ChILXzgPyiEV-0FvcwX8KKU08tZm4AtIr3j90pE-ql-nULE&s=10", link: "http://laguaridadegian.com.ar/content/peliculas/avatar.mp4" },
+{ title: "Godzilla el rey de los mounstros", img: "https://es.web.img2.acsta.net/pictures/19/05/08/15/10/4091893.jpg", link: "http://laguaridadegian.com.ar/content/godzilla/peliculas/godzilla-2-el-rey-de-los-monstruos.mp4" },
+{ title: "Avengers infiniti war", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYvyKOTUZNqWEUIliGlhHVvyBWJFZi2cAc7n5gV7S36ylZc_97bSeYFlY&s=10", link: "http://laguaridadegian.com.ar/content/avengers/peliculas/avengers-infinity-war.mp4" },
+{ title: "Jurassic Word", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYon2JOVuF6geK7UbDhnUkLpi1Cke6vlXYFUYPGsw4dzKs3tutxd8RB9m8&s=10", link: "http://laguaridadegian.com.ar/content/jurassic-world/peliculas/jurassic-world.mp4" },
+{ title: "la guerra del mañana", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMFFfXBql4KS3e534UnQ94ucRiprQ_jpoDa3pg3TQPqKUJKCWWNAGKFrc&s=10", link: "https://media.cm/1b6b8wr5gblv" },
+{ title: "los jefes", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQe5jlgzubb-A0FrGqGrcM5JcU9p1knFynnGrybowsCWx7b2nOB1G6HhfU&s=10", link: "https://archive.org/embed/los-jefes_202503" },
+{ title: "piratas del caribe la venganza de Zalazar", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8GpZChyQbowUUg_6-Onq22ejbyFz-9qSJ4AII7aF6w5R6dMgabxH8jAQ&s=10", link: "https://media.cm/cteaemvcc74y" },
+{ title: "Transformers el último caballero", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTBbQpDMeKBAM05N1tRlwj74UBReYgECyDNMfBMKGo5jMQVQv-iDlzeco&s=10", link: "https://media.cm/dgc31wi6m3tf" },
+{ title: "temporada de brujas", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTdSXCEjiQz24wNhQBhd-YAFiIKUkyVexyta6GT5uzixiPURgTaAt_gpw&s=10", link: "https://media.cm/1zqh2jvz4uk8" },
+{ title: "Deadpool y wolverine", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrflARy03N5QmEFUvfMatatzMqQsx-njpi6c_JuxQkgkFxyKoPN5xgLGEY&s=10", link: "https://media.cm/4baj7hrkt84s" },
+{ title: "Jurassic Word dominio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2_BNlXBvypgWtCIWkd_JxHvI0S4XrnFhbx8HdAYOGUCkjZkUuFSQEPgc&s=10", link: "http://laguaridadegian.com.ar/content/jurassic-world/peliculas/jurassic-world-dominion.mp4" },
+      { title: "Ant-Man And The Wasp", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNo5pbmLBzNLIsXbCL881j24jVyTRQq7u-7hxHj_qR-64F1xw0MaMzIC0&s=10", link: "http://laguaridadegian.com.ar/content/peliculas/antman-y-la-avispa.mp4" }
+    ];
+
+const drama = [
+  { title: "En busca de la felicidad", img: "URL_IMAGEN", link: "ENLACE_VIDEO" },
+  { title: "Milagros del cielo", img: "URL_IMAGEN", link: "ENLACE_VIDEO" }
+];
+
+
+    const ciencia = [
+      { title: "momia", img: "https://es.web.img3.acsta.net/pictures/17/04/11/09/51/221611.jpg", link: "https://www.bitchute.com/embed/wvKxv2deUMO6" },
+{ title: "terror bajo la tierra 4", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQBzilGv3Mi4NI8_sePPz7F3RezL4eMokS3QHxn8u_48ZfjjOlGvPjHoK3&s=10", link: "https://www.bitchute.com/embed/o4t9Qkg7QFGD" },
+{ title: "Bumblebee", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKZudYaE8BFWm2pcRDk-IFXWUV2Usz5rZCTOir8_C4FBkztG-3Glr30oA&s=10", link: "http://laguaridadegian.com.ar/content/peliculas/bumblebee.mp4" },
+{ title: "Jurassic Word el reino caído", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRn-ICbrDwr5kbhnITL6-RmK6i6VniBgHNEDGYWt_NVBoSiVNJ--v16bQ&s=10", link: "http://laguaridadegian.com.ar/content/jurassic-world/peliculas/jurassic-world-el-reino-caido.mp4" },
+{ title: "pánico en el tren bala", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPp6EjbbVM04OCVeH8lQRjmJu_6XU3ZAbzV8GvXt77w30CPyxogGaz3lMD&s=10", link: "https://www.bitchute.com/embed/FDKxqEG6feOb" },
+{ title: "ninfómana", img: "https://m.media-amazon.com/images/S/pv-target-images/9885b6cef330b3509394bb36a70750c5a63524595fbd53bbe3d91302dbfc7428.png", link: "https://media.cm/qrpr6x5echi1" },
+{ title: "tiempo de guerra", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWsPF_bZ9ZYRgdEERmSZt9ddkT624O_XWIAmTiyW1eOYZXtVqTB9f3gErP&s=10", link: "https://www.bitchute.com/embed/LjZCzMeQCEIy" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+{ title: "Sci-Fi 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video456" },
+      { title: "Sci-Fi 2", img: "https://via.placeholder.com/150x220", link: "https://pixeldrain.com/u/example3" }
+    ];
+
+    const animadas = [
+{ title: "Coraline", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmC5z98KNSfM4rB72M8OryUTXK84M8r5loW3v_DwreXmSp6IoQdKrrFXI7&s=10", link: "https://www.bitchute.com/embed/gTUhCnEWEx9e/" },
+      { title: "cars 1", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiNTi93HjFJTs0ZHAMYjTn2XaTbx23jZmds93rS8oWdlIZ2WvuVTIx4udz&s=10", link: "https://www.bitchute.com/embed/Umq5vuKkYSJJ" },
+{ title: "cars 2", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPhdvaAkbclkaCVDBqE_LmKuxLRpR8xVemnNkIx1_8-ljE8Z7rXQ0CVQA&s=10", link: "https://www.bitchute.com/embed/AsR1bf68czgU" },
+{ title: "cars 3", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4q-Bv6UPfs9TVfyouY8GIhbiVSoXaomLUNQW8EtlyXCShpB_rsLu-Nse6&s=10", link: "http://laguaridadegian.com.ar/content/peliculas/cars-3.mp4" },
+{ title: "los crods 2", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY5hYQ_2ItmFwebYef6pdvg-RU-dudT1eKsSC8WLS8gEkdYNeH_YA8qE0&s=10", link: "http://laguaridadegian.com.ar/content/peliculas/los-croods-2.mp4" },
+{ title: "Alvin y las ardillas 3", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiPyBwIxIrkqpwSzBhho5ZQ2DMKwEgNUOh_2zfsbVSi54ZnzdGbYgd6LY&s=10", link: "http://laguaridadegian.com.ar/content/peliculas/alvin-y-las-ardillas-3.mp4" },
+{ title: "memorias de un caracol", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcUYbJgvTC37qKEAZHYZAfdMXD2Mtry2MqFBCFbPTJF-CuvCEZh1i0mMk&s=10", link: "https://media.cm/81h8v4sg6wpj" },
+{ title: "Inazuma eleven", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYVsFMeFV7eZDf-1HtZV1tRplmxHHoE5nbNyBI1fA4dw1LnVXMXZKmtXOA&s=10", link: "https://media.cm/u/HQBT" },
+{ title: "paranorman", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfBdIbvSRZNJEZ5O-z9qoIZdrkw7tPTUor-95ZEV4gtMlntdLrBkax0bQ6&s=10", link: "https://media.cm/a090ud631k9b" },
+{ title: "un Gran dinosaurio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJpQJNc8ap48ogAWrPngGI4-QRVDUndcZGn4FrDK4kngMhTLPNhicIstSd&s=10", link: "https://media.cm/0eyp9v21o86i" },
+{ title: "el cadáver de la novia", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA8w3Yk1GG_md9mXYkNo6833Ghx8E2sed8dllkm3Ixykv6gfgDMu-HdSNt&s=10", link: "https://media.cm/j3e9yuieycad" },
+{ title: "patos", img: "https://m.media-amazon.com/images/S/pv-target-images/9f66ca240f6a24b6c96abcb301cb3808e0b25d721d557c4d0102b49ad2c3408e.jpg", link: "https://media.cm/igq4dizlrhqs" },
+{ title: "dragón ball super héroe", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUpJ0FgrFg2vwPIGHJZOsdzmebVYk-EI_Zcqr_bl4mWSHFYFs3zihmc0I&s=10", link: "https://media.cm/odwidz7nb799" },
+{ title: "tortugas ninja caos mutante", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZPE2RLRkbLBmZD4HyxAnSH8FSJjSnjCYYrMr9lKbYsdyegRj9gMXqwyU&s=10", link: "https://media.cm/3x4aid32cbc4" },
+{ title: "el extraño mundo de Jack", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWCBJ56bDcTIcZe-1VfM2VY-RY3P7aF_iXHvQOtmkaOW3R4N9EjdQBzJ1t&s=10", link: "https://media.cm/gtjn36ndavhq" },
+{ title: "mi villano favorito 4", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsTEIIPyXCq6SytQ04JZEV_p83yuBs7urOMcG4CfA6Tf7kcfw5Zq0hX7YE&s=10", link: "https://media.cm/qrt7kqkujgjy" },
+{ title: "la leyenda de los chaneques", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9k5wUKVkA43cOA-WirkxD82fDpFDZeDV4EPeyskpngtChw27EV4BDn_0&s=10", link: "https://media.cm/g11siy8lprdg" },
+{ title: "dinosaurio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlAN9unZbn4Rt5YH83uMZb2kaq7wGMhrTbnRNKmM-3OmJH5EMKIGpcVd0&s=10", link: "https://media.cm/8y3actq5qc6a" },
+{ title: "bolt", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1qZyL4Ak3nn9i7WGEeE_0bBWcJhQT08WzVrAiKPzD6RumO72U94-q0GX9&s=10", link: "https://www.bitchute.com/embed/txFwlMytdzbR" },
+{ title: "Animada 1", img: "https://via.placeholder.com/150x220", link: "https://www.bitchute.com/embed/EXAMPLE3/" },
+{ title: "Animada 1", img: "https://via.placeholder.com/150x220", link: "https://www.bitchute.com/embed/EXAMPLE3/" },
+    ];
+
+    const terror = [
+      { title: "el conjuro", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH-x5OQtfT-vYIIOdv34FR7c-M8TKCqv-wlQ&s", link: "https://www.bitchute.com/embed/pO3eQjdlGwXY" },
+{ title: "cuando acecha la maldad", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbZmaCqq1XuroM2jpx2IuqcvZx0_cmfUqU2QLYu7l4Du4o3-bAdAvSACQ&s=10", link: "https://pixeldrain.com/u/992SaSXu" },
+{ title: "siniestro", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLvqvqHZT42vvAqHs5VF6Mc97P9gqulJUlgKXxoC6D9c7TlXu-NPHXIXo&s=10", link: "https://media.cm/luuvc0nyttmc" },
+{ title: "Oculus", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlVFZbD7bituH7iiU1AbS2fGHWBZef84tLHA4nrSDqyb18cljJxn9XfFWj&s=10", link: "https://media.cm/olnamk4qmngm" },
+{ title: "no te muevas", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnMYr71zVDv9rVYz1Z2MV-9Hxw7Ih_2TcC-QqhblhUzZgDYhPQ9og6WPk5&s=10", link: "https://media.cm/s1bxxt0aqrvb" },
+{ title: "ritual de la oscuridad", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTltQNXF8_7uc72kmog2emTW9uVU8P2y_B_FWQ_ysBGeIBkrxDYmFANX3M&s=10", link: "https://media.cm/6sqg0gb37yl6l" },
+{ title: "la sustancia", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAsyBg200UI6FTvpphD8QFZGQW47nfYaTKioQwdNmqJz7jIvibEc63DDQr&s=10", link: "https://media.cm/0rh31fahyd6p" },
+{ title: "Terror 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video789" },
+{ title: "Terror 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video789" },
+{ title: "Terror 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video789" },
+{ title: "Terror 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video789" },
+{ title: "Terror 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video789" },
+{ title: "Terror 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video789" },
+{ title: "Terror 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video789" },
+{ title: "Terror 1", img: "https://via.placeholder.com/150x220", link: "https://media.cm/video789" },
+    ];
+
+    function renderCards(sectionId, movies) {
+      const container = document.getElementById(sectionId);
+      movies.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('data-title', movie.title);
+        card.innerHTML = `<img src="${movie.img}" alt="${movie.title}" onclick="openPlayer('${movie.link}')">`;
+        container.appendChild(card);
+      });
+    }
+
+    renderCards('estrenos', estrenos);
+    renderCards('recomendado', recomendado);
+    renderCards('ciencia', ciencia);
+    renderCards('animadas', animadas);
+    renderCards('terror', terror);
+
+  function closePlayer() {
+    const playerPopup = document.getElementById('playerPopup');
+    const videoFrame = document.getElementById('videoFrame');
+    if (videoFrame) videoFrame.src = "";
+    if (playerPopup) playerPopup.style.display = 'none';
+  }
+</script>
+</body>
 </html>
